@@ -1,33 +1,41 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Task</title>
-    <link rel="stylesheet" href="{% static 'css/pagestyle.css' %}">
-</head>
-<body>
-    
+    <link rel="stylesheet" href="{% static 'css/pagestyle.css' %}" />
+  </head>
+  <body>
     <div class="form-container">
-        <h1>Edit Task</h1>
-        <form action="{% url 'edit_task' task.id %}" method="post">
-            {% csrf_token %}
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" value="{{ task.title }}" required>
-            
-            <label for="description">Description:</label>
-            <textarea id="description" name="description" rows="4" required>{{ task.description }}</textarea>
-            
-            {% comment %} <label for="status">Status:</label>
-            <select id="status" name="status">
-                <option value="todo" {% if task.status == 'todo' %}selected{% endif %}>To-Do</option>
-                <option value="pre_inprogress" {% if task.status == 'pre_inprogress' %}selected{% endif %}>Pre-Processing</option>
-                <option value="pre_done" {% if task.status == 'pre_done' %}selected{% endif %}>Pre-Processing Done</option>
-            </select> {% endcomment %}
-            
-            <button type="submit" class="btn">Save Changes</button>
-        </form>
+      <h1>Edit Task</h1>
+      <form action="{% url 'edit_task' task.id %}" method="post">
+        {% csrf_token %}
+        <label for="title">Title:</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          value="{{ task.title }}"
+          required
+        />
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" required>{{ task.description }}</textarea
+        >
+
+        <!-- Add Priority Field -->
+        <label for="priority">Priority:</label>
+        <select id="priority" name="priority" required>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <!-- Default -->
+          <option value="high">High</option>
+        </select>
+
+        <button type="submit" class="btn">Save Changes</button>
+      </form>
     </div>
-</body>
+  </body>
 </html>

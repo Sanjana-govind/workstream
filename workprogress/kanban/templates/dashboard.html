@@ -35,6 +35,19 @@
     </div>
 
     <h1>Kanban Board</h1>
+
+    <!-- Add Filter Dropdown -->
+    <form method="get" action="{% url 'dashboard' %}">
+        <label for="priority">Filter by Priority:</label>
+        <select name="priority" id="priority">
+            <option value="">All</option>
+            <option value="low" {% if request.GET.priority == "low" %}selected{% endif %}>Low</option>
+            <option value="medium" {% if request.GET.priority == "medium" %}selected{% endif %}>Medium</option>
+            <option value="high" {% if request.GET.priority == "high" %}selected{% endif %}>High</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
     <div class="kanban-board">
         <!-- To-Do Column -->
         <div class="kanban-column">
@@ -43,8 +56,10 @@
             {% for task in tasks %}
                 {% if task.status == 'todo' %}
                     <div class="task-card">
+                        {% comment %} <a href="{% url 'task_detail' task.id %}"> {% endcomment %}
                         <h3>{{ task.title }}</h3>
                         <p>{{ task.description }}</p>
+                        <p><strong>Priority:</strong> {{ task.priority }}</p>
                         <a href="{% url 'edit_task' task.id %}" class="btn">Edit</a>
                         <a href="{% url 'delete_task' task.id %}" class="btn">Delete</a>
                         <a href="{% url 'move_task' task.id 'pre_inprogress' %}" class="btn">Move to Pre-Processing</a>
@@ -64,17 +79,7 @@
                     </div>
                 {% endif %}
             {% endfor %}
-            {% comment %} <h3>Done</h3>
-            {% for task in tasks %}
-                {% if task.status == 'pre_done' %}
-                    <div class="task-card">
-                        <h3>{{ task.title }}</h3>
-                        <a href="{% url 'move_task' task.id 'dev_inprogress' %}" class="btn">Move to Development</a>
-                    </div>
-                {% endif %}
-            {% endfor %} {% endcomment %}
         </div> 
-
 
         
         <div class="kanban-column">
@@ -118,7 +123,6 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <!-- Repeat for Development, Done, Urgent -->
     </div>
 </body>
 </html>
