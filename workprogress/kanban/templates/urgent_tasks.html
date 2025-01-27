@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="kanban-column">
+        <h2>Urgent Action Required</h2>
+        <a href="{% url 'add_urgent_task' %}" class="btn">Add Task</a>
+        {% for task in tasks %}
+            <div class="task-card">
+                <h3>{{ task.title }}</h3>
+                <p>{{ task.description }}</p>
+                <a href="{% url 'edit_urgent_task' task.id %}" class="btn">Edit</a>
+                <a href="{% url 'delete_urgent_task' task.id %}" class="btn">Delete</a>
+            </div>
+        {% empty %}
+            <p>No tasks added yet!</p>
+        {% endfor %}
+    </div>
+    
+</body>
+</html>
