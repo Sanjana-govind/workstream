@@ -39,3 +39,37 @@ class UrgentTask(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ActivityLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    action = models.CharField(max_length=255)  # Stores action text
+    timestamp = models.DateTimeField(auto_now_add=True)  # Auto timestamp
+
+    def __str__(self):
+        return f"{self.user.username} - {self.action} - {self.timestamp.strftime('%Y-%m-%d %H:%M:%S')}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
