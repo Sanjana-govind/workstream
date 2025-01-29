@@ -18,4 +18,7 @@ urlpatterns = [
     path('delete-urgent-task/<int:task_id>/', views.delete_urgent_task, name='delete_urgent_task'),
 
     path("task-details/<int:task_id>/", views.task_detail, name="task_detail"),
+
+    path('activity-log/', views.activity_log, name='activity_log'),
+    path('delete-logs/', views.delete_logs, name='delete_logs'),
 ]

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from .models import Task
 from django.contrib.auth.decorators import login_required
-from .models import UrgentTask
+from .models import UrgentTask,ActivityLog
 from .forms import UrgentTaskForm
 
 
@@ -62,14 +62,26 @@ def dashboard(request):
 
 
 @login_required
+@login_required
 def add_task(request):
     if request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
         priority = request.POST.get('priority')  # Retrieve the priority from the form
-        Task.objects.create(title=title, description=description, status='todo',priority= priority, created_by=request.user)
+        
+        task = Task.objects.create(
+            title=title, description=description, status='todo',
+            priority=priority, created_by=request.user
+        )
+
+        # Log the activity after successfully creating a task
+        ActivityLog.objects.create(
+            user=request.user,
+            action=f"Created Task: {task.title}"
+        )
+
         return redirect('dashboard')
-    print(request.POST.get('priority'))
+
     return render(request, 'add_task.html')
 
 @login_required
@@ -85,14 +97,23 @@ def edit_task(request, task_id):
 @login_required
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, created_by=request.user)
+    ActivityLog.objects.create(
+        user=request.user,
+        action=f"Deleted Task: {task.title}"
+    )
     task.delete()
     return redirect('dashboard')
 
 @login_required
 def move_task(request, task_id, new_status):
     task = get_object_or_404(Task, id=task_id, created_by=request.user)
+    old_status = task.status
     task.status = new_status
     task.save()
+    ActivityLog.objects.create(
+        user=request.user,
+        action=f"Moved Task: {task.title} from {old_status} to {new_status}"
+    )
     return redirect('dashboard')
 
 
@@ -133,3 +154,15 @@ def delete_urgent_task(request, task_id):
 def task_detail(request, task_id):
     task = get_object_or_404(Task, id=task_id)  # Fetch the task or return 404 if not found
     return render(request, "task_detail.html", {"task": task})
+
+
+def activity_log(request):
+    logs = ActivityLog.objects.filter(user=request.user).order_by('-timestamp')
+    return render(request, 'activity_log.html', {'logs': logs})
+
+
+def delete_logs(request):
+    if request.method == 'POST':
+        ActivityLog.objects.filter(user=request.user).delete()
+    return redirect('activity_log')
+
