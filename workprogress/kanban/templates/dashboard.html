@@ -5,36 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kanban Board</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        .logout {
-            position: absolute; /* Allows precise positioning */
-            top: 10px; /* Adjusts the vertical position */
-            right: 10px; /* Adjusts the horizontal position */
-        }
-        
-        .btn-logout {
-            text-decoration: none;
-            background-color: #ff4d4d; /* Red background for visibility */
-            color: white; /* White text color */
-            padding: 10px 15px; /* Padding for button-like appearance */
-            border-radius: 5px; /* Rounded corners */
-            font-size: 14px; /* Adjust font size */
-            transition: background-color 0.3s ease; /* Smooth hover transition */
-        }
-        
-        .btn-logout:hover {
-            background-color: #e63939; /* Slightly darker red on hover */
-        }
-        
-    </style>
 </head>
 <body>
+    {% comment %} <div>
+        <button id="theme-toggle" class="theme-btn">🌙 Dark Mode</button>
+    </div> {% endcomment %}
     <div class = "logout mx-6">
         <a href="{% url 'logout' %}">Logout</a>
     </div>
 
-    <h1>Kanban Board</h1>
+    <h1 class="title shadow">WorkStream</h1>
+
+    <!-- Add Filter Dropdown -->
+    <form method="get" action="{% url 'dashboard' %}">
+        <label for="priority">Filter by Priority:</label>
+        <select name="priority" id="priority">
+            <option value="">All</option>
+            <option value="low" {% if request.GET.priority == "low" %}selected{% endif %}>Low</option>
+            <option value="medium" {% if request.GET.priority == "medium" %}selected{% endif %}>Medium</option>
+            <option value="high" {% if request.GET.priority == "high" %}selected{% endif %}>High</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
     <div class="kanban-board">
         <!-- To-Do Column -->
         <div class="kanban-column">
@@ -43,8 +38,11 @@
             {% for task in tasks %}
                 {% if task.status == 'todo' %}
                     <div class="task-card">
-                        <h3>{{ task.title }}</h3>
+                        <a href="{% url 'task_detail' task.id %}">
+                            <h3>{{ task.title }}</h3>
+                        </a>
                         <p>{{ task.description }}</p>
+                        <p><strong>Priority:</strong> {{ task.priority }}</p>
                         <a href="{% url 'edit_task' task.id %}" class="btn">Edit</a>
                         <a href="{% url 'delete_task' task.id %}" class="btn">Delete</a>
                         <a href="{% url 'move_task' task.id 'pre_inprogress' %}" class="btn">Move to Pre-Processing</a>
@@ -59,22 +57,14 @@
             {% for task in tasks %}
                 {% if task.status == 'pre_inprogress' %}
                     <div class="task-card">
-                        <h3>{{ task.title }}</h3>
+                        <a href="{% url 'task_detail' task.id %}">
+                            <h3>{{ task.title }}</h3>
+                        </a>
                         <a href="{% url 'move_task' task.id 'dev' %}" class="btn">Move to Development</a>
                     </div>
                 {% endif %}
             {% endfor %}
-            {% comment %} <h3>Done</h3>
-            {% for task in tasks %}
-                {% if task.status == 'pre_done' %}
-                    <div class="task-card">
-                        <h3>{{ task.title }}</h3>
-                        <a href="{% url 'move_task' task.id 'dev_inprogress' %}" class="btn">Move to Development</a>
-                    </div>
-                {% endif %}
-            {% endfor %} {% endcomment %}
         </div> 
-
 
         
         <div class="kanban-column">
@@ -82,7 +72,9 @@
             {% for task in tasks %}
                 {% if task.status == 'dev' %}
                     <div class="task-card">
-                        <h3>{{ task.title }}</h3>
+                        <a href="{% url 'task_detail' task.id %}">
+                            <h3>{{ task.title }}</h3>
+                        </a>
                         <a href="{% url 'move_task' task.id 'done' %}" class="btn">Move to Done</a>
                     </div>
                 {% endif %}
@@ -95,8 +87,9 @@
             {% for task in tasks %}
                 {% if task.status == 'done' %}
                     <div class="task-card">
-                        <h3>{{ task.title }}</h3>
-                        {% comment %} <a href="{% url 'move_task' task.id 'done' %}" class="btn">Move to Done</a> {% endcomment %}
+                        <a href="{% url 'task_detail' task.id %}">
+                            <h3>{{ task.title }}</h3>
+                        </a>
                         <a href="{% url 'delete_task' task.id %}" class="btn">Delete</a>
 
                     </div>
@@ -110,7 +103,9 @@
             {% for task in tasks %}
                 {% if task.status == 'todo' %}
                     <div class="task-card">
-                        <h3>{{ task.title }}</h3>
+                        <a href="{% url 'task_detail' task.id %}">
+                            <h3>{{ task.title }}</h3>
+                        </a>
                         <p>{{ task.description }}</p>
                         <a href="{% url 'edit_task' task.id %}" class="btn">Edit</a>
                         <a href="{% url 'delete_task' task.id %}" class="btn">Delete</a>
@@ -118,7 +113,9 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <!-- Repeat for Development, Done, Urgent -->
     </div>
+
+    <script src="/static/js/theme.js"></script>
+
 </body>
 </html>

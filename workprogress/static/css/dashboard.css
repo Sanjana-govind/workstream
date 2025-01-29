@@ -97,13 +97,15 @@ a {
 
 /* 🌓 Dark Mode Toggle Button */
 .dark-mode .theme-btn {
-    background: #ff9800;
+    background: #f5c987;
     color: black;
 }
 
 .dark-mode .theme-btn:hover {
     background: #e68900;
 }
+
+
 
 
 
@@ -230,3 +232,116 @@ h1 {
         max-width: 100%;
     }
 }
+
+
+.logout {
+    position: absolute; /* Allows precise positioning */
+    top: 10px; /* Adjusts the vertical position */
+    right: 10px; /* Adjusts the horizontal position */
+}
+
+.btn-logout {
+    text-decoration: none;
+    background-color: #ff4d4d; /* Red background for visibility */
+    color: white; /* White text color */
+    padding: 10px 15px; /* Padding for button-like appearance */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 14px; /* Adjust font size */
+    transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+.btn-logout:hover {
+    background-color: #e63939; /* Slightly darker red on hover */
+}
+
+
+/* Optional: Add a fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.title {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    text-align: center;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin: 2rem 0;
+    padding: 0.5rem;
+    text-transform: capitalize;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Underline animation effect */
+.title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: #4a90e2;
+    transition: all 0.3s ease-in-out;
+    transform: translateX(-50%);
+}
+
+.title:hover::after {
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .title {
+        font-size: 2rem;
+        margin: 1.5rem 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.75rem;
+        margin: 1rem 0;
+    }
+}
+
+.title.gradient {
+    background: linear-gradient(45deg, #2d3748, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Optional shadow effect */
+.title.shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.task-card p {
+    word-wrap: break-word;   /* Wrap long words */
+    overflow-wrap: break-word;
+    white-space: normal;      /* Prevent text from extending outside */
+    max-width: 100%;          
+}
+.task-card a {
+    color: #ffffff;
+    text-decoration: underline;
+    word-break: break-all;   
+}
+
+.task-card a:hover {
+    color: #ff9800;
+}
+

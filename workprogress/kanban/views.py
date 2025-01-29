@@ -51,7 +51,13 @@ def logout_view(request):
 
 @login_required
 def dashboard(request):
+    priority_filter = request.GET.get('priority', '')  # Get priority from query params
     tasks = Task.objects.filter(created_by=request.user)
+    
+    if priority_filter:
+        tasks = tasks.filter(priority=priority_filter)  # Apply priority filter if selected
+
+    tasks = tasks.order_by('-priority', '-created_at')  # Sort by priority and creation time
     return render(request, 'dashboard.html', {'tasks': tasks})
 
 
@@ -60,8 +66,10 @@ def add_task(request):
     if request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
-        Task.objects.create(title=title, description=description, status='todo', created_by=request.user)
+        priority = request.POST.get('priority')  # Retrieve the priority from the form
+        Task.objects.create(title=title, description=description, status='todo',priority= priority, created_by=request.user)
         return redirect('dashboard')
+    print(request.POST.get('priority'))
     return render(request, 'add_task.html')
 
 @login_required
@@ -119,3 +127,9 @@ def delete_urgent_task(request, task_id):
         task.delete()
         return redirect('urgent_tasks')
     return render(request, 'delete_urgent_task.html', {'task': task})
+
+
+
+def task_detail(request, task_id):
+    task = get_object_or_404(Task, id=task_id)  # Fetch the task or return 404 if not found
+    return render(request, "task_detail.html", {"task": task})

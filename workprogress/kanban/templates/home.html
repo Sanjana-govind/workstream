@@ -1,109 +1,209 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Work Progress Tracker</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
+      body {
+        font-family: "Inter", sans-serif;
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .image {
+        flex: 1;
+        background: url("{% static 'images/home.jpeg' %}") no-repeat center;
+        background-size: cover;
+      }
+
+      .welcome {
+        flex: 1;
+        background-color: #f4f6f9;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+      }
+
+      .welcome h1 {
+        font-family: "Poppins", sans-serif; /* Choose a clean, modern font */
+        font-size: 2.5rem; /* Adjust size to fit your layout */
+        font-weight: 700; /* Bold */
+        color: #333; /* Dark gray text for elegance */
+        text-align: center; /* Center the title */
+        text-transform: uppercase; /* Makes text all caps */
+        letter-spacing: 3px; /* Add some spacing between letters */
+        margin: 20px 0; /* Add spacing around the title */
+        background: linear-gradient(
+          90deg,
+          #007bff,
+          #00d4ff
+        ); /* Gradient color effect */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent; /* Makes the text transparent to show gradient */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        animation: fadeIn 2s ease-in-out; /* Animation for appearance */
+      }
+
+      /* Optional: Add a fade-in animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .welcome p {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 30px;
+      }
+
+      .welcome a {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: rgb(86, 131, 207);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+      }
+
+      .welcome a:hover {
+        background-color: #5c3c8c;
+      }
+
+      @media (max-width: 768px) {
         body {
-            font-family: 'Inter', sans-serif;
-            display: flex;
-            min-height: 100vh;
+          flex-direction: column;
         }
 
         .image {
-            flex: 1;
-            background: url("{% static 'images/home.jpeg' %}") no-repeat center;
-            background-size: cover;
+          min-height: 300px;
         }
 
         .welcome {
-            flex: 1;
-            background-color: #f4f6f9;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
+          padding: 30px;
         }
 
         .welcome h1 {
-            font-size: 32px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 20px;
+          font-size: 24px;
         }
 
         .welcome p {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 30px;
+          font-size: 14px;
         }
 
         .welcome a {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #7952b3;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
+          font-size: 14px;
+        }
+      }
+
+      .tagline {
+        font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+        font-size: 1.25rem;
+        font-weight: 400;
+        color: #64748b;
+        text-align: center;
+        line-height: 1.6;
+        max-width: 760px;
+        margin: -1rem auto 2rem;
+        padding: 0 1rem;
+        position: relative;
+        letter-spacing: 0.2px;
+      }
+
+      /* Subtle fade-in animation */
+      .tagline {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+        animation-delay: 0.3s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Style for highlighting important words */
+      .tagline strong {
+        color: #3b82f6;
+        font-weight: 500;
+      }
+
+      /* Subtle divider */
+      .tagline::after {
+        content: "";
+        display: block;
+        width: 60px;
+        height: 2px;
+        background: #e2e8f0;
+        margin: 2rem auto 0;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .tagline {
+          font-size: 1.125rem;
+          margin: -0.75rem auto 1.5rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .tagline {
+          font-size: 1rem;
+          margin: -0.5rem auto 1rem;
         }
 
-        .welcome a:hover {
-            background-color: #5c3c8c;
+        .tagline::after {
+          width: 40px;
+          margin: 1.5rem auto 0;
         }
-
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-
-            .image {
-                min-height: 300px;
-            }
-
-            .welcome {
-                padding: 30px;
-            }
-
-            .welcome h1 {
-                font-size: 24px;
-            }
-
-            .welcome p {
-                font-size: 14px;
-            }
-
-            .welcome a {
-                font-size: 14px;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="image"></div>
     <div class="welcome">
-        <h1>Welcome to Work Progress Tracker</h1>
-        <p>Manage your tasks and projects efficiently.</p>
-        
-        <div class="register-link mx-3">
-            Don't have an account? <a href="{% url 'signup' %}">Register here</a>
-        </div>
-        Or
-        <a href="{% url 'login' %}">Login</a>
+      <h1>Welcome to WorkStream</h1>
+      <p class="tagline">
+        Discover a <strong>revolutionary</strong> way to transform your ideas
+        into reality
+      </p>
+
+      <div class="register-link mx-3">
+        Don't have an account? <a href="{% url 'signup' %}">Register here</a>
+      </div>
+      Or
+      <a href="{% url 'login' %}">Login</a>
     </div>
-</body>
+  </body>
 </html>

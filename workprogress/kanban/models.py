@@ -13,9 +13,16 @@ class Task(models.Model):
         ('urgent', 'Urgent Action Required'),
     ]
 
+    PRIORITY_CHOICES = [
+        ('low', 'Low'),
+        ('medium', 'Medium'),
+        ('high', 'High'),
+    ]
+
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='todo')
+    priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='medium')
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -23,8 +30,6 @@ class Task(models.Model):
     def __str__(self):
         return self.title
 
-
-from django.db import models
 
 class UrgentTask(models.Model):
     title = models.CharField(max_length=200)

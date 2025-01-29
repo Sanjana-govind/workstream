@@ -1,16 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>{% block title %}Sign Up{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
     {% comment %} <style>
-        body { display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif; }
-        .container { display: flex; width: 70%; }
-        .image { flex: 1; background: url('/static/images/auth.jpeg') no-repeat center; background-size: cover; }
-        .form { flex: 1; padding: 20px; }
-        input { width: 100%; padding: 10px; margin: 10px 0; }
-        button { width: 100%; padding: 10px; background: #007BFF; color: white; border: none; cursor: pointer; }
-    </style> {% endcomment %}
-    <style>
         * {
             margin: 0;
             padding: 0;
@@ -134,7 +128,7 @@
                 padding: 30px;
             }
         }
-    </style>
+    </style> {% endcomment %}
 
 </head>
 <body>
