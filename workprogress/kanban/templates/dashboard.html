@@ -4,141 +4,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanban Board</title>
+    <title>WorkStream Dashboard</title>
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        .log-btn, .logout-btn, .filter-btn {
-            background-color: #007bff;
-            color: white;
-            padding: 8px 15px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-        
-        .log-btn:hover, .logout-btn:hover, .filter-btn:hover {
-            background-color: #0056b3;
-        }
-        
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    {% comment %} <div>
-        <button id="theme-toggle" class="theme-btn">🌙 Dark Mode</button>
-    </div> {% endcomment %}
-
-    <div>
-        <div class = "Activity mx-6">
-            <a href="{% url 'activity_log' %}" class="log-btn">Activity Log</a>
+    <!-- Navigation Bar -->
+    <main class="main-content custom-bg">
+        {% comment %} <h1>WorkStream</h1> {% endcomment %}
+    <nav class="navbar">
+        <div class="navbar-container mx-10">
+            <div class="navbar-right">
+                {% comment %} <h1 class="navbar-title">WorkStream</h1> {% endcomment %}
+                <div class="navbar-links">
+                    <h1 class="navbar-title">WorkStream</h1>
+                    {% comment %} <a href="{% url 'teams' %}" class="nav-link">Teams</a> {% endcomment %}
+                </div>
+            </div>
+            
+            <div class="navbar-right">
+                <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="{% url 'dashboard' %}" class="nav-link ">Dashboard</a>
+                <a href="{% url 'activity_log' %}" class="nav-link">
+                    <i class="fas fa-history"></i> Activity Log
+                </a>
+                <a href="{% url 'archive_log' %}" class="nav-link">Archive</a>
+                <a href="{% url 'archive_log' %}" class="nav-link">Profile</a>
+                <a href="{% url 'logout' %}" class="nav-btn logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+                 {% comment %} <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-moon"></i>
+                </button>  {% endcomment %}
+                
+            </div> 
         </div>
-        <div class = "logout mx-6">
-            <a href="{% url 'logout' %}">Logout</a>
-        </div>
-    </div>
+    </nav>
 
-    
-
-    <h1 class="title shadow">WorkStream</h1>
-
-    <!-- Add Filter Dropdown -->
-    <form method="get" action="{% url 'dashboard' %}">
-        <label for="priority">Filter by Priority:</label>
-        <select name="priority" id="priority">
-            <option value="">All</option>
-            <option value="low" {% if request.GET.priority == "low" %}selected{% endif %}>Low</option>
-            <option value="medium" {% if request.GET.priority == "medium" %}selected{% endif %}>Medium</option>
-            <option value="high" {% if request.GET.priority == "high" %}selected{% endif %}>High</option>
-        </select>
-        <button type="submit">Filter</button>
-    </form>
-
-    <div class="kanban-board">
-        <!-- To-Do Column -->
-        <div class="kanban-column">
-            <h2>To-Do</h2>
-            <a href="{% url 'add_task' %}" class="btn">Add Task</a>
-            {% for task in tasks %}
-                {% if task.status == 'todo' %}
-                    <div class="task-card">
-                        <a href="{% url 'task_detail' task.id %}">
-                            <h3>{{ task.title }}</h3>
-                        </a>
-                        <p>{{ task.description }}</p>
-                        <p><strong>Priority:</strong> {{ task.priority }}</p>
-                        <a href="{% url 'edit_task' task.id %}" class="btn">Edit</a>
-                        <a href="{% url 'delete_task' task.id %}" class="btn">Delete</a>
-                        <a href="{% url 'move_task' task.id 'pre_inprogress' %}" class="btn">Move to Pre-Processing</a>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-        <!-- Other Columns -->
-
-        <div class="kanban-column">
-            <h2>Preprocessing</h2>
-            {% for task in tasks %}
-                {% if task.status == 'pre_inprogress' %}
-                    <div class="task-card">
-                        <a href="{% url 'task_detail' task.id %}">
-                            <h3>{{ task.title }}</h3>
-                        </a>
-                        <a href="{% url 'move_task' task.id 'dev' %}" class="btn">Move to Development</a>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div> 
-
-        
-        <div class="kanban-column">
-            <h2>Development</h2>
-            {% for task in tasks %}
-                {% if task.status == 'dev' %}
-                    <div class="task-card">
-                        <a href="{% url 'task_detail' task.id %}">
-                            <h3>{{ task.title }}</h3>
-                        </a>
-                        <a href="{% url 'move_task' task.id 'done' %}" class="btn">Move to Done</a>
-                    </div>
-                {% endif %}
-            {% endfor %}
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <form method="get" action="{% url 'dashboard' %}" class="filter-form">
+                <div class="filter-group">
+                    <label for="priority">Filter by Priority:</label>
+                    <select name="priority" id="priority" class="filter-select">
+                        <option value="">All</option>
+                        <option value="low" {% if request.GET.priority == "low" %}selected{% endif %}>Low</option>
+                        <option value="medium" {% if request.GET.priority == "medium" %}selected{% endif %}>Medium</option>
+                        <option value="high" {% if request.GET.priority == "high" %}selected{% endif %}>High</option>
+                    </select>
+                    <button type="submit" class="filter-btn">Apply Filter</button>
+                </div>
+            </form>
         </div>
 
+        <!-- Kanban Board -->
+        <div class="kanban-board">
+            <!-- To-Do Column -->
+            <div class="kanban-column">
+                <div class="column-header">
+                    <h2>To-Do</h2>
+                    <a href="{% url 'add_task' %}" class="add-task-btn">
+                        <i class="fas fa-plus"></i> Add Task
+                    </a>
+                </div>
+                {% for task in tasks %}
+                    {% if task.status == 'todo' %}
+                        <div class="task-card" data-priority="{{ task.priority }}">
+                            <div class="task-header">
+                                <h3>{{ task.title }}</h3>
+                                <span class="priority-badge {{ task.priority }}">
+                                    {{ task.priority }}
+                                </span>
+                            </div>
+                            <p class="task-description">{{ task.description }}</p>
+                            <div class="task-actions">
+                                <a class="btn eye-btn" href="{% url 'task_detail' task.id %}" class="task-btn">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a class="btn eye-btn" href="{% url 'edit_task' task.id %}" class="task-btn">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="btn eye-btn" href="{% url 'move_task' task.id 'pre_inprogress' %}" class="task-btn">
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                                <a class="btn eye-btn" href="{% url 'delete_task' task.id %}" class="task-btn delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
 
-        <div class="kanban-column">
-            <h2>Done</h2>
-            {% for task in tasks %}
-                {% if task.status == 'done' %}
-                    <div class="task-card">
-                        <a href="{% url 'task_detail' task.id %}">
-                            <h3>{{ task.title }}</h3>
-                        </a>
-                        <a href="{% url 'delete_task' task.id %}" class="btn">Delete</a>
+            <!-- Pre-processing Column -->
+            <div class="kanban-column">
+                <div class="column-header">
+                    <h2>Pre-processing</h2>
+                </div>
+                {% for task in tasks %}
+                    {% if task.status == 'pre_inprogress' %}
+                        <div class="task-card" data-priority="{{ task.priority }}">
+                            <div class="task-header">
+                                <h3>{{ task.title }}</h3>
+                                <span class="priority-badge {{ task.priority }}">
+                                    {{ task.priority }}
+                                </span>
+                            </div>
+                            <div class="task-actions">
+                                <a class="btn eye-btn" href="{% url 'task_detail' task.id %}" class="task-btn">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a class="btn eye-btn" href="{% url 'move_task' task.id 'dev' %}" class="task-btn">
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
 
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div> 
+            <!-- Development Column -->
+            <div class="kanban-column">
+                <div class="column-header">
+                    <h2>Development</h2>
+                </div>
+                {% for task in tasks %}
+                    {% if task.status == 'dev' %}
+                        <div class="task-card" data-priority="{{ task.priority }}">
+                            <div class="task-header">
+                                <h3>{{ task.title }}</h3>
+                                <span class="priority-badge {{ task.priority }}">
+                                    {{ task.priority }}
+                                </span>
+                            </div>
+                            <div class="task-actions">
+                                <a class="btn eye-btn" href="{% url 'task_detail' task.id %}" class="task-btn">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a  class="btn eye-btn" href="{% url 'move_task' task.id 'done' %}" class="task-btn">
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
 
-        <div class="kanban-column">
-            <h2>Immediate Attention Needed</h2>
-            <a href="{% url 'add_urgent_task' %}" class="btn">Add Task</a>
-            {% for task in tasks %}
-                {% if task.status == 'todo' %}
-                    <div class="task-card">
-                        <a href="{% url 'task_detail' task.id %}">
-                            <h3>{{ task.title }}</h3>
-                        </a>
-                        <p>{{ task.description }}</p>
-                        <a href="{% url 'edit_task' task.id %}" class="btn">Edit</a>
-                        <a href="{% url 'delete_task' task.id %}" class="btn">Delete</a>
-                    </div>
-                {% endif %}
-            {% endfor %}
+            <!-- Done Column -->
+            <div class="kanban-column">
+                <div class="column-header">
+                    <h2>Done</h2>
+                </div>
+                {% for task in tasks %}
+                    {% if task.status == 'done' %}
+                        <div class="task-card" data-priority="{{ task.priority }}">
+                            <div class="task-header">
+                                <h3>{{ task.title }}</h3>
+                                <span class="priority-badge {{ task.priority }}">
+                                    {{ task.priority }}
+                                </span>
+                            </div>
+                            <div class="task-actions">
+                                <a class="btn eye-btn" href="{% url 'task_detail' task.id %}" class="task-btn">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a class="btn eye-btn" href="{% url 'delete_task' task.id %}" class="task-btn delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- Urgent Column -->
+            <div class="kanban-column urgent">
+                <div class="column-header">
+                    <h2>Immediate Attention</h2>
+                    <a href="{% url 'add_urgent_task' %}" class="add-task-btn urgent">
+                        <i class="fas fa-plus"></i> Add Urgent
+                    </a>
+                </div>
+                {% for task in tasks %}
+                    {% if task.status == 'urgent' %}
+                        <div class="task-card urgent" data-priority="high">
+                            <div class="task-header">
+                                <h3>{{ task.title }}</h3>
+                                <span class="priority-badge high">Urgent</span>
+                            </div>
+                            <p class="task-description">{{ task.description }}</p>
+                            <div class="task-actions">
+                                <a href="{% url 'task_detail' task.id %}" class="task-btn">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'edit_task' task.id %}" class="task-btn">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'delete_task' task.id %}" class="task-btn delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    </main>
 
-    <script src="/static/js/theme.js"></script>
-
+    <script src="{% static 'js/theme.js' %}"></script>
 </body>
 </html>

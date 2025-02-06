@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from .models import Task
 from django.contrib.auth.decorators import login_required
-from .models import UrgentTask,ActivityLog
+from .models import UrgentTask,ActivityLog,ArchivedTask
 from .forms import UrgentTaskForm
 
 
@@ -94,13 +94,39 @@ def edit_task(request, task_id):
         return redirect('dashboard')
     return render(request, 'edit_task.html', {'task': task})
 
+# @login_required
+# def delete_task(request, task_id):
+#     task = get_object_or_404(Task, id=task_id, created_by=request.user)
+#     ActivityLog.objects.create(
+#         user=request.user,
+#         action=f"Deleted Task: {task.title}"
+#     )
+
+#     # task = Task.objects.get(id=task_id)
+
+#     # Only archive tasks that are marked as 'done'
+#     if task.status == 'done':
+#         ArchivedTask.objects.create(
+#             title=task.title,
+#             description=task.description,
+#             deleted_by=request.user
+#         )
+#     task.delete()
+#     return redirect('dashboard')
+
+
 @login_required
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, created_by=request.user)
-    ActivityLog.objects.create(
-        user=request.user,
-        action=f"Deleted Task: {task.title}"
-    )
+
+    # Ensure status is correctly handled
+    if hasattr(task, 'status') and task.status == 'done':
+        ArchivedTask.objects.create(
+            title=task.title,
+            description=task.description,
+            deleted_by=request.user
+        )
+
     task.delete()
     return redirect('dashboard')
 
@@ -166,3 +192,7 @@ def delete_logs(request):
         ActivityLog.objects.filter(user=request.user).delete()
     return redirect('activity_log')
 
+@login_required
+def archive_log(request):
+    archived_tasks = ArchivedTask.objects.all().order_by('-completed_at')  # Show latest completed tasks first
+    return render(request, 'archive_log.html', {'archived_tasks': archived_tasks})

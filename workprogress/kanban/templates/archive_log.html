@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* Reset and base styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f7fa;
+        padding: 2rem;
+      }
+
+      h1 {
+        color: #2c3e50;
+        margin-bottom: 2rem;
+        font-size: 2rem;
+        font-weight: 600;
+        text-align: center;
+      }
+
+      /* Table styles */
+      table {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto 2rem auto;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      th {
+        background-color: #3498db;
+        color: white;
+        font-weight: 600;
+        padding: 1rem;
+        text-align: left;
+      }
+
+      td {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      tr:hover {
+        background-color: #f8f9fa;
+      }
+
+      /* Timestamp column */
+      td:first-child {
+        color: #666;
+        font-family: monospace;
+      }
+
+      /* Action column */
+      td:last-child {
+        font-weight: 500;
+      }
+
+      /* Clear Activity Log button */
+      form {
+        display: flex;
+        justify-content: center;
+      }
+
+      {% comment %} button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      } {% endcomment %}
+       button{
+        background-color: #e74c3c;
+        display: inline-block;
+        padding: 10px 15px;
+        margin-top: 10px;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+       }
+
+      button:hover {
+        background-color: #c0392b;
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        body {
+          padding: 1rem;
+        }
+
+        th,
+        td {
+          padding: 0.75rem;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+        }
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 10px 15px;
+        margin-top: 10px;
+        background: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    
+    .btn:hover {
+        background: #0056b3;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>Activity Log</h1>
+    <table>
+        <tr>
+            <th>Completed At</th>
+            <th>Task</th>
+            <th>Deleted By</th>
+        </tr>
+        {% for log in archived_tasks %}
+        <tr>
+            <td>{{ log.completed_at }}</td>
+            <td>{{ log.title }}</td>
+            <td>{{ log.deleted_by.username }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3" style="text-align: center;">No archived tasks found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+
+    <!-- Delete All Logs Button -->
+    <form method="post" action="{% url 'delete_logs' %}">
+      {% csrf_token %}
+      <button type="submit" mt-3>Clear Activity Log</button>
+      <a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
+    </form>
+  </body>
+</html>

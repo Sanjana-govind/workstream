@@ -21,4 +21,6 @@ urlpatterns = [
 
     path('activity-log/', views.activity_log, name='activity_log'),
     path('delete-logs/', views.delete_logs, name='delete_logs'),
+
+    path('archive-log/', views.archive_log, name='archive_log'),
 ]

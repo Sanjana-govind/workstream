@@ -51,6 +51,20 @@ class ActivityLog(models.Model):
 
 
 
+from django.db import models
+from django.contrib.auth.models import User
+
+class ArchivedTask(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    completed_at = models.DateTimeField(auto_now_add=True)  # Store deletion timestamp
+    deleted_by = models.ForeignKey(User, on_delete=models.CASCADE)  # Track user who deleted the task
+
+    def __str__(self):
+        return f"{self.title} (Completed on {self.completed_at})"
+
+
+
 
 
 
