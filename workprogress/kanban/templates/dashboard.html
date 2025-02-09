@@ -47,19 +47,25 @@
     <!-- Main Content -->
     <main class="main-content">
         <!-- Filter Section -->
-        <div class="filter-section">
-            <form method="get" action="{% url 'dashboard' %}" class="filter-form">
-                <div class="filter-group">
-                    <label for="priority">Filter by Priority:</label>
-                    <select name="priority" id="priority" class="filter-select">
-                        <option value="">All</option>
-                        <option value="low" {% if request.GET.priority == "low" %}selected{% endif %}>Low</option>
-                        <option value="medium" {% if request.GET.priority == "medium" %}selected{% endif %}>Medium</option>
-                        <option value="high" {% if request.GET.priority == "high" %}selected{% endif %}>High</option>
-                    </select>
-                    <button type="submit" class="filter-btn">Apply Filter</button>
-                </div>
-            </form>
+        <div class="dashboard-controls mt-5">
+            <div class="filter-section">
+                <form method="get" action="{% url 'dashboard' %}" class="filter-form">
+                    <div class="filter-group">
+                        <label for="priority">Filter by Priority:</label>
+                        <select name="priority" id="priority" class="filter-select">
+                            <option value="">All</option>
+                            <option value="low" {% if request.GET.priority == "low" %}selected{% endif %}>Low</option>
+                            <option value="medium" {% if request.GET.priority == "medium" %}selected{% endif %}>Medium</option>
+                            <option value="high" {% if request.GET.priority == "high" %}selected{% endif %}>High</option>
+                        </select>
+                        <button type="submit" class="filter-btn">Apply Filter</button>
+                    </div>
+                </form>
+            </div>
+            <div class="search-container">
+                <input class = "form-control" type="text" placeholder="Search">
+                <button class="btn btn-success">Search</button>
+            </div>
         </div>
 
         <!-- Kanban Board -->

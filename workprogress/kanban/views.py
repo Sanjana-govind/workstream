@@ -196,3 +196,7 @@ def delete_logs(request):
 def archive_log(request):
     archived_tasks = ArchivedTask.objects.all().order_by('-completed_at')  # Show latest completed tasks first
     return render(request, 'archive_log.html', {'archived_tasks': archived_tasks})
+
+
+def search_page(request):
+    return render(request,'search.html')

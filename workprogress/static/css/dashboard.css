@@ -220,3 +220,67 @@
 .dark-mode .eye-btn:hover {
     background-color: #333; /* Slightly lighter black */
 }
+
+
+
+
+.dashboard-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+.filter-section {
+    flex-shrink: 0;
+}
+
+.filter-form {
+    margin: 0;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-select {
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.filter-btn {
+    padding: 6px 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-container input {
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn-success {
+    padding: 6px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}

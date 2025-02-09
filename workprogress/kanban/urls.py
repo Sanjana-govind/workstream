@@ -23,4 +23,6 @@ urlpatterns = [
     path('delete-logs/', views.delete_logs, name='delete_logs'),
 
     path('archive-log/', views.archive_log, name='archive_log'),
+
+    path("search-page/",views.search_page,name= "search_page"),
 ]
