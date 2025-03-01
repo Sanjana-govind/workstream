@@ -15,7 +15,7 @@ WorkStream is a web-based Kanban task management system that helps users organiz
 ## 🛠️ Tech Stack
 - **Frontend:** Html,Css
 - **Backend:** Django Framework
-- **Database:** postgressql, AWS RDS
+- **Database:** PostgreSql, AWS RDS
 
 ## Screenshots
 https://drive.google.com/drive/u/1/folders/1AJ9cJiTiZ19QgiUn8Nnyxez15xexOePv
